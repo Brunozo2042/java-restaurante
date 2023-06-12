@@ -1,6 +1,5 @@
 package com.restaurante.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,7 +7,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -21,15 +22,26 @@ public class Pedido {
     @OneToOne
     private Mesa mesa;
 
-    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
-    private List<Prato> prato;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "Prato_Pedido", joinColumns = @JoinColumn(name = "pedido_id"), inverseJoinColumns = @JoinColumn(name = "prato_id"))
+    private List<Prato> pratos;
 
     private double VlrTot;
+    private boolean finalizado;
 
-    public Pedido(Mesa mesa) {
+    public Pedido(Mesa mesa, List<Prato> pratos, double VlrTot) {
         this.mesa = mesa;
-        this.prato = new ArrayList<>();
-        this.VlrTot = 0;
+        this.pratos = pratos;
+        this.VlrTot = VlrTot;
+        this.finalizado = false;
+    }
+
+    public boolean isFinalizado() {
+        return finalizado;
+    }
+
+    public void setFinalizado(boolean finalizado) {
+        this.finalizado = finalizado;
     }
 
     public Pedido() {
@@ -52,11 +64,11 @@ public class Pedido {
     }
 
     public List<Prato> getPrato() {
-        return prato;
+        return pratos;
     }
 
     public void addPrato(Prato prato) {
-        this.prato.add(prato);
+        this.pratos.add(prato);
     }
 
     public double getVlrTot() {

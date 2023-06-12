@@ -11,17 +11,27 @@ public class Mesa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    boolean ocupada;
+    private int id;
+    private boolean ocupada;
 
     @OneToOne
-    Cliente cli;
+    private Cliente cli;
 
-    public Mesa(boolean ocupada) {
-        this.ocupada = ocupada;
-    }
+    @OneToOne
+    private Pedido pedido;
 
     public Mesa() {
+        this.ocupada = false;
+        this.cli = null;
+        this.pedido = null;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public int getId() {

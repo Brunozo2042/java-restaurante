@@ -27,7 +27,24 @@ public class GenericDAO<T> {
     return entities;
   }
 
+  public List<T> findListById(Class<T> entityClass, Long id) {
+    EntityManager em = getEntityManager();
+    CriteriaQuery<T> criteriaQuery = em.getCriteriaBuilder().createQuery(entityClass);
+    criteriaQuery.from(entityClass);
+    List<T> entities = em.createQuery(criteriaQuery).getResultList();
+    em.close();
+    return entities;
+  }
+
   public T findById(Class<T> entityClass, Integer id) {
+    EntityManager em = getEntityManager();
+    T entity = em.find(entityClass, id);
+    em.close();
+    return entity;
+  }
+
+  // Cliente
+  public T findByIdLong(Class<T> entityClass, Long id) {
     EntityManager em = getEntityManager();
     T entity = em.find(entityClass, id);
     em.close();

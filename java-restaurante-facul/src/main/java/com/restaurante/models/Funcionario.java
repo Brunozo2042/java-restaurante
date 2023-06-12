@@ -4,15 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 public class Funcionario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String nome, senha;
-    boolean gerente;
+    private int id;
+    private String nome, senha;
+    private boolean gerente;
 
     public Funcionario(String nome, String senha, boolean gerente) {
         this.nome = nome;
